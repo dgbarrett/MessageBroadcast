@@ -24,7 +24,8 @@ public class BroadcastPanel extends JPanel {
         this.setLayout( new BorderLayout() );
         
         this.add( new BroadcastMenuBar(this), BorderLayout.NORTH );
-        this.add( new JButton("HELLO"), BorderLayout.CENTER);
+        this.add( new BroadcastDisplayArea(this), BorderLayout.CENTER);
+        this.add( new BroadcastStatusBar(this), BorderLayout.SOUTH);
     }
     
 }
