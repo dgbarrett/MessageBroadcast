@@ -8,6 +8,8 @@ package messagebroadcast.gui;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,11 +21,11 @@ import javax.swing.text.StyleConstants;
  *
  * @author damon
  */
-public class SplashPanel extends JPanel {
+public class SplashFrame extends JFrame implements ActionListener {
     
     private MessageBroadcastGUI parent;
 
-    public SplashPanel(MessageBroadcastGUI parent) {
+    public SplashFrame(MessageBroadcastGUI parent) {
         super();
         
         this.parent = parent;
@@ -40,12 +42,19 @@ public class SplashPanel extends JPanel {
         
         output.setText("MessageBroadcast \n v0.1");
         
-        JButton button = new JButton();
-        button.setText("Enter");
+        JButton button = new JButton("Enter");
+        button.addActionListener(this);
         
         this.add( output, BorderLayout.CENTER );        
         this.add( button, BorderLayout.SOUTH );
-
+        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //this.parent.showBroadcastScreen();
     }
     
 }

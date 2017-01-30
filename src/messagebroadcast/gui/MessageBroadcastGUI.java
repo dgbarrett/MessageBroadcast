@@ -14,14 +14,19 @@ import javax.swing.JFrame;
  */
 public class MessageBroadcastGUI extends JFrame {
     
-    public MessageBroadcastGUI() {
-        super();
-        
-        this.setLayout( new BorderLayout() );
-        this.setSize(400, 200);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.add( new SplashPanel() , BorderLayout.CENTER );
-        this.setVisible(true);
-    }
+    private BroadcastPanel broadcast;
     
+    public MessageBroadcastGUI() {
+        super("MessageBroadcast");
+        
+        this.broadcast = new BroadcastPanel(this);
+
+        this.setLayout( new BorderLayout() );
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(400, 600);
+        
+        this.add( this.broadcast, BorderLayout.CENTER );
+        
+        this.setVisible(true);
+    }  
 }
