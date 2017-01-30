@@ -6,7 +6,6 @@
 package messagebroadcast.gui;
 
 import java.awt.BorderLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -15,7 +14,10 @@ import javax.swing.JPanel;
  */
 public class BroadcastPanel extends JPanel {
     
-    MessageBroadcastGUI parent;
+    private MessageBroadcastGUI parent;
+    private BroadcastMenuBar menubar;
+    private BroadcastArea broadcast;
+    private BroadcastStatusBar status;
 
     public BroadcastPanel(MessageBroadcastGUI parent) {
         super();
@@ -23,9 +25,21 @@ public class BroadcastPanel extends JPanel {
         this.parent = parent;
         this.setLayout( new BorderLayout() );
         
-        this.add( new BroadcastMenuBar(this), BorderLayout.NORTH );
-        this.add( new BroadcastDisplayArea(this), BorderLayout.CENTER);
-        this.add( new BroadcastStatusBar(this), BorderLayout.SOUTH);
+        this.menubar = new BroadcastMenuBar(this);
+        this.broadcast = new BroadcastArea(this);
+        this.status = new BroadcastStatusBar(this);
+        
+        this.add( this.menubar, BorderLayout.NORTH );
+        this.add( this.broadcast, BorderLayout.CENTER);
+        this.add( this.status, BorderLayout.SOUTH);
+    }
+    
+    public int getParentWidth() {
+        return this.parent.getWidth();
+    }
+    
+    public int getParentHeight() {
+        return this.parent.getHeight();
     }
     
 }
