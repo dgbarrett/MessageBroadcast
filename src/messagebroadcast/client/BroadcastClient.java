@@ -10,9 +10,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import messagebroadcast.client.security.ClientCrypt;
 import messagebroadcast.api.APIMessage;
-import messagebroadcast.server.BroadcastServer;
 import messagebroadcast.api.APIRequest;
 import messagebroadcast.api.APIResponse;
+import messagebroadcast.server.APIRequestHandler;
 
 public class BroadcastClient {
     
@@ -54,7 +54,7 @@ public class BroadcastClient {
             String publicKey = response.getParam("PK");
             String encryptedMessage = this.crypto.encrypt(message, publicKey);
 
-            APIRequest req = new APIRequest(BroadcastServer.SEND_MESSAGE, true);
+            APIRequest req = new APIRequest(APIRequestHandler.SEND_MESSAGE, true);
             req.setParam("MESSAGE", encryptedMessage);
             
             System.out.println("SENDING ENCYRYPTED MESSAGE: " + req.toString() );

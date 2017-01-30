@@ -1,15 +1,18 @@
 package messagebroadcast.gui;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class BroadcastArea extends JPanel {
     
     private BroadcastPanel parent;
+    private JLabel title;
     private BroadcastDisplayPane broadcasts;
     private BroadcastCreationArea create;
     private JButton sendMessage;
@@ -23,6 +26,9 @@ public class BroadcastArea extends JPanel {
         this.create = new BroadcastCreationArea(this);
         this.sendMessage = new JButton("Broadcast Message");
         this.exit = new JButton("Exit");
+        this.title = new JLabel("Broadcasts:");
+        
+        this.sendMessage.addActionListener( new SendMessageListener(this) );
         
         this.setLayout( new GridBagLayout() );
         GridBagConstraints c = new GridBagConstraints();
@@ -30,33 +36,49 @@ public class BroadcastArea extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 4;
-        c.gridheight = 3;
+        c.gridheight = 1;
+        c.anchor = GridBagConstraints.WEST;
         
+        this.title.setFont( new Font(null, Font.BOLD, 18));
+        this.add( this.title , c);
+        
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 4;
+        c.gridheight = 3;
+        c.anchor = GridBagConstraints.WEST;
+        c.insets = new Insets(10,0,0,0);
+
         this.add( this.broadcasts , c);
         
-        c.gridx = 0;
+        c.gridx = 1;
         c.gridy = 4;
         c.gridwidth = 4;
+        c.anchor = GridBagConstraints.WEST;
         c.gridheight = 1;
-        c.insets = new Insets(10,0,0,0);
         
         this.add( this.create , c ); 
         
         c.gridx = 1;
         c.gridy = 5;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.gridheight = 1;
-        c.anchor = GridBagConstraints.WEST;
-
-        this.add( this.exit, c );
+        c.anchor = GridBagConstraints.CENTER;
+        
+        this.add( this.sendMessage, c );    
         
         c.gridx = 3;
         c.gridy = 5;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.gridheight = 1;
         c.anchor = GridBagConstraints.EAST;
         
-        this.add( this.sendMessage, c );    
+        this.add( this.exit, c );
+    }
+    
+    protected void sendMessage() {
+        String message = this.create.getBroadcast();
+        this.parent.sendMessage(message);
     }
     
     public int getParentWidth() {

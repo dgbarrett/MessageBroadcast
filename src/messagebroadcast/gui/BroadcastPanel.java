@@ -25,6 +25,10 @@ public class BroadcastPanel extends JPanel {
         this.add( this.status, BorderLayout.SOUTH);
     }
     
+    protected void sendMessage(String message) {
+        
+    }
+    
     public int getParentWidth() {
         return this.parent.getWidth();
     }

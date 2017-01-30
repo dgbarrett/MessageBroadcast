@@ -24,6 +24,12 @@ public class BroadcastCreationArea extends JScrollPane {
         this.setViewportView(textarea);
     }
     
+    public String getBroadcast() {
+        String text = this.textarea.getText();
+        this.textarea.setText(null);
+        return text;
+    }
+    
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(375, 50);
