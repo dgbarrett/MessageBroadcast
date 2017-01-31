@@ -40,6 +40,7 @@ public class APIRequestHandler implements Runnable {
                         case GET_PUBLIC_KEY:
                             resp = new APIResponse(APIResponse.SUCCESS);
                             resp.setParam("PK", this.res.getPublicKey());
+                            resp.setParam("SIZE", Integer.toString(this.res.getPublicKeySize()));
                             out.println(resp.toString());
                             break;
                         case GET_MESSAGE_QUEUE:
@@ -47,7 +48,7 @@ public class APIRequestHandler implements Runnable {
                             if (!this.res.messageQueueIsEmpty()) {
                                for (String msg : this.res.getMessageQueue() ) {
                                     if (!"".equals(msg)) {
-                                        resp.setParam("MESSAGE", this.res.decrypt(msg));
+                                        resp.setParam("MESSAGE", msg);
                                     }
                                 }
                                 for (String msg : this.res.getMessageIds() ) {
@@ -59,7 +60,13 @@ public class APIRequestHandler implements Runnable {
                             out.println(resp.toString());
                             break;
                         case SEND_MESSAGE:
-                            String message = req.getParam("MESSAGE");
+                            String[] messageParts = req.getParams("MESSAGE");
+                            String message = "";
+                            
+                            for (String messagePart : messageParts) {
+                                message += this.res.decrypt(messagePart);
+                            }
+
                             this.res.addMessage(message);
 
                             resp = new APIResponse(APIResponse.SUCCESS);

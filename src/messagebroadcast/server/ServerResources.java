@@ -31,6 +31,10 @@ class ServerResources {
         return this.crypto.getPublicKey();
     }
     
+    public int getPublicKeySize() {
+        return this.crypto.getPublicKeySize();
+    }
+    
     public synchronized boolean addMessage(String message) {
         if (this.messageQueue.size() >= QUEUE_SIZE) {
             try {

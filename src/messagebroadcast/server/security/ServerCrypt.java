@@ -36,5 +36,9 @@ public class ServerCrypt {
         return CryptUtil.encodeBase16(this.locker.getPublicKey());
     }
     
+    public int getPublicKeySize(){
+        return KeyLocker.getKeySize();
+    }
+    
     
 }

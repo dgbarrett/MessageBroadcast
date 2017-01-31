@@ -17,7 +17,7 @@ import java.util.Arrays;
  * @author damon
  */
 public final class KeyLocker {
-    private static final int KEY_SIZE = 512;
+    public static final int KEY_SIZE = 2048;
     private byte[] publicKey; 
     private byte[] privateKey;
     
@@ -48,5 +48,9 @@ public final class KeyLocker {
     
     protected byte[] getPrivateKey() {
         return Arrays.copyOf(privateKey, privateKey.length);
+    }
+    
+    public static int getKeySize() {
+        return KEY_SIZE;
     }
 }

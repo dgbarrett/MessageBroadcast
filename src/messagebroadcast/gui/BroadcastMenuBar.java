@@ -5,9 +5,13 @@
  */
 package messagebroadcast.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,9 +50,29 @@ public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
         this.messaging.add(this.sendPicture);
         
         this.exit.addActionListener( new ExitListener(this) );
+        this.versInfo.addActionListener( new VersionInfoListener(this.getFrame()) );
         
         this.add(this.about);
         this.add(this.messaging);
+    }
+    
+    private class VersionInfoListener implements ActionListener {
+        private final JFrame gui;
+        
+        public VersionInfoListener( JFrame gui ){
+            this.gui = gui;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JOptionPane.showMessageDialog(this.gui, 
+                                          "          Current version is v0.1", 
+                                          "Version Info", 
+                                          JOptionPane.PLAIN_MESSAGE);
+        }        
+    }
+    
+    private JFrame getFrame() {
+        return this.parent.getFrame();
     }
     
     @Override

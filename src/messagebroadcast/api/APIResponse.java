@@ -1,9 +1,5 @@
 package messagebroadcast.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-
 public final class APIResponse extends APIMessage {
     public static final int SUCCESS = 1;
     public static final int FAIL = 0;
@@ -47,21 +43,4 @@ public final class APIResponse extends APIMessage {
         
         return msg;
     }  
-
-    public String[] getParams(String name) {
-        ArrayList<String> lis = new ArrayList<>();
-        
-        for (Map.Entry<String,String> entry : this.params) {
-            String paramName = entry.getKey();
-            String paramValue = entry.getValue();
-            
-            if(paramName.equals(name)) {
-                lis.add(paramValue);
-            }
-        }
-        
-        Object[] objArray = lis.toArray();
-        
-        return Arrays.copyOf(objArray, objArray.length, String[].class);
-    }
 }

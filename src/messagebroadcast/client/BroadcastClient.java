@@ -9,10 +9,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import messagebroadcast.client.security.ClientCrypt;
 import messagebroadcast.api.APIMessage;
 import messagebroadcast.api.APIRequest;
@@ -41,38 +39,54 @@ public class BroadcastClient {
     }
     
     public int broadcastMessage(String dirtyMessage) {
-        try {
-            String message = this.crypto.clean(dirtyMessage);
-            
-            System.out.println("SENDING PK_GET");
-            this.send("MSGTYPE=GET_PK;");
-            APIResponse response = this.getResponse();
-            System.out.println("Response was: " + response.toString());
+            try {
+                System.out.println("SENDING PK_GET");
+                this.send("MSGTYPE=GET_PK;");
+                
+                APIResponse response = this.getResponse();
+                System.out.println("Response was: " + response.toString());
 
+                String publicKey = response.getParam("PK");
+                int pkSize = Integer.parseInt(response.getParam("SIZE"));
+                int maxMsgSize = pkSize/8 - 11;
+                
+                ArrayList<String> messageParts = new ArrayList<>();
+                String message = this.crypto.clean(dirtyMessage);
+                int strLen = message.length();
+                
+                System.out.println("Message len is " + strLen);
 
-            String publicKey = response.getParam("PK");
-            String encryptedMessage = this.crypto.encrypt(message, publicKey);
+                for (int i = 0; i < strLen ; i= i + maxMsgSize) {
+                    if (i + maxMsgSize > strLen) {
+                        messageParts.add(message.substring(i, strLen));
+                    } else {
+                        messageParts.add(message.substring(i, i + maxMsgSize - 1));
+                    }
+                }
+                
+                if (!messageParts.isEmpty()) {
+                    APIRequest req = new APIRequest(APIRequestHandler.SEND_MESSAGE, true);
+                
+                    for (String messagePart : messageParts) {
+                        String encryptedMessage = this.crypto.encrypt(messagePart, publicKey);
+                        req.setParam("MESSAGE", encryptedMessage);
+                    }
 
-            APIRequest req = new APIRequest(APIRequestHandler.SEND_MESSAGE, true);
-            req.setParam("MESSAGE", encryptedMessage);
-            
-            System.out.println("SENDING ENCYRYPTED MESSAGE: " + req.toString() );
-            this.send(req);
-            response = this.getResponse();
-            System.out.println("Response was: " + response.toString());
-            System.out.println(" ");
-
-        } catch (Exception e ) {
-            System.out.println(e.getMessage());
-        }
-        
+                    System.out.println("SENDING ENCYRYPTED MESSAGE: " + req.toString() );
+                    this.send(req);
+                    response = this.getResponse();
+                    System.out.println("Response was: " + response.toString());
+                    System.out.println(" ");
+                }
+                
+            } catch (Exception e ) {
+                System.out.println(e.getMessage());
+            }
         return 0;
     } 
     
     public List<Map.Entry<String, String>> getBroadcasts() {
         try {
-            System.out.println("sending GET_QUEUE");
-
             this.send("MSGTYPE=GET_QUEUE");
             APIResponse response = this.getResponse();
             
