@@ -26,4 +26,8 @@ public class MessageBroadcastGUI extends JFrame {
         
         this.setVisible(true);
     } 
+    
+    public void sendMessage(String message) {
+        this.broadcastClient.broadcastMessage(message);
+    }
 }

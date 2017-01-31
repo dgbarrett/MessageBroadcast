@@ -32,6 +32,7 @@ public class BroadcastServer {
 
         while(true) {
             try { 
+                System.out.println("connection");
                 clientSocket = this.serverSocket.accept();
                 Runnable requestHandler = new APIRequestHandler(clientSocket, this.res);
                 new Thread(requestHandler).start();

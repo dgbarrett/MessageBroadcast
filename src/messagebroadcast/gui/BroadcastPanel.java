@@ -26,7 +26,7 @@ public class BroadcastPanel extends JPanel {
     }
     
     protected void sendMessage(String message) {
-        
+        this.parent.sendMessage(message);
     }
     
     public int getParentWidth() {
