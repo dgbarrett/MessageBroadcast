@@ -47,6 +47,10 @@ class ServerResources {
         return true;
     }
     
+    public synchronized boolean messageQueueIsEmpty() {
+        return this.messageQueue.isEmpty();
+    }
+    
     public String decrypt(String msg) {
         return this.crypto.decrypt(msg);
     }
