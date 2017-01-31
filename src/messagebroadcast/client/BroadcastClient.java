@@ -40,8 +40,10 @@ public class BroadcastClient {
         this.crypto = new ClientCrypt();
     }
     
-    public int broadcastMessage(String message) {
+    public int broadcastMessage(String dirtyMessage) {
         try {
+            String message = this.crypto.clean(dirtyMessage);
+            
             System.out.println("SENDING PK_GET");
             this.send("MSGTYPE=GET_PK;");
             APIResponse response = this.getResponse();

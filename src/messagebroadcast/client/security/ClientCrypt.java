@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package messagebroadcast.client.security;
 
 import messagebroadcast.security.CryptUtil;
 
-/**
- *
- * @author damon
- */
 public class ClientCrypt {
     
     private static final String ALGORITHM = "RSA";
@@ -25,6 +16,10 @@ public class ClientCrypt {
            System.out.println(e.getMessage());
        }
        return CryptUtil.encodeBase16(encrypted);
+    }
+    
+    public String clean(String msg) {
+        return msg.toLowerCase();
     }
     
 }

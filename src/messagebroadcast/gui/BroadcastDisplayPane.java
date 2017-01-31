@@ -62,7 +62,7 @@ public class BroadcastDisplayPane extends JScrollPane {
 
             for (Map.Entry<String, String> entry : newEntries) {
                 try {
-                    doc.insertString(doc.getLength(), entry.getValue() + "\n", null);
+                    doc.insertString(doc.getLength(), "[BROADCAST]: " + entry.getValue() + "\n", null);
                 } catch (BadLocationException e) {
                     return;
                 }
