@@ -31,6 +31,7 @@ public class BroadcastArea extends JPanel {
         this.title = new JLabel("Broadcasts:");
         
         this.sendMessage.addActionListener( new SendMessageListener(this) );
+        this.exit.addActionListener( new ExitListener(this) );
         
         this.setLayout( new GridBagLayout() );
         GridBagConstraints c = new GridBagConstraints();
@@ -93,6 +94,10 @@ public class BroadcastArea extends JPanel {
 
     void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
         this.broadcasts.updateBroadcasts(broadcasts);
+    }
+    
+    public void exitGUI() {
+        this.parent.exitGUI();
     }
     
 }

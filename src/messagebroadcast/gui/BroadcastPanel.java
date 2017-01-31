@@ -38,6 +38,10 @@ public class BroadcastPanel extends JPanel {
     public int getParentHeight() {
         return this.parent.getHeight();
     }
+    
+    public void exitGUI() {
+        this.parent.exitGUI();
+    }
 
     void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
         this.broadcast.updateBroadcasts(broadcasts);

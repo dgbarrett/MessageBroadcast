@@ -43,6 +43,10 @@ public class MessageBroadcastGUI extends JFrame {
         }
     }
     
+    public void exitGUI() {
+        this.dispose();
+    }
+    
     public void updateBroadcastsFromServer() {
         this.broadcast.updateBroadcasts( this.broadcastClient.getBroadcasts() );
     }
