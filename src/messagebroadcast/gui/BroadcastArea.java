@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class BroadcastArea extends JPanel {
     
@@ -99,5 +98,4 @@ public class BroadcastArea extends JPanel {
     public void exitGUI() {
         this.parent.exitGUI();
     }
-    
 }

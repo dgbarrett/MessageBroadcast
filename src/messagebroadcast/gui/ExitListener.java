@@ -15,5 +15,4 @@ public class ExitListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         this.parent.exitGUI();
     }
-    
 }

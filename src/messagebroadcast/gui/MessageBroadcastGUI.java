@@ -32,6 +32,7 @@ public class MessageBroadcastGUI extends JFrame {
         this.add( this.broadcast, BorderLayout.CENTER );
         
         scheduleServerUpdates();
+        this.getRootPane().setDefaultButton(this.broadcast.getSubmit());
         
         this.setVisible(true);
     } 
