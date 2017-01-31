@@ -27,7 +27,7 @@ public class BroadcastCreationArea extends JScrollPane {
     public String getBroadcast() {
         String text = this.textarea.getText();
         this.textarea.setText(null);
-        return text.replace("\n", " ").replace("  ", " ");
+        return text.replace("\n", " ").replace("  ", " ").replace(";", "-");
     }
     
     @Override

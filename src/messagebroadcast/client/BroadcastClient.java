@@ -49,25 +49,30 @@ public class BroadcastClient {
                 String publicKey = response.getParam("PK");
                 int pkSize = Integer.parseInt(response.getParam("SIZE"));
                 int maxMsgSize = pkSize/8 - 11;
+                maxMsgSize /= 2;
                 
                 ArrayList<String> messageParts = new ArrayList<>();
                 String message = this.crypto.clean(dirtyMessage);
+                String submsg = null;
                 int strLen = message.length();
                 
                 System.out.println("Message len is " + strLen);
 
                 for (int i = 0; i < strLen ; i= i + maxMsgSize) {
                     if (i + maxMsgSize > strLen) {
-                        messageParts.add(message.substring(i, strLen));
+                       submsg = message.substring(i, strLen);
                     } else {
-                        messageParts.add(message.substring(i, i + maxMsgSize - 1));
+                        submsg = message.substring(i, i + maxMsgSize);
                     }
+                    System.out.println("Submsg is " + submsg.length());
+                    messageParts.add(submsg);
                 }
                 
                 if (!messageParts.isEmpty()) {
                     APIRequest req = new APIRequest(APIRequestHandler.SEND_MESSAGE, true);
                 
                     for (String messagePart : messageParts) {
+                        System.out.println("Submsg is " + messagePart.length());
                         String encryptedMessage = this.crypto.encrypt(messagePart, publicKey);
                         req.setParam("MESSAGE", encryptedMessage);
                     }
