@@ -9,8 +9,6 @@ import messagebroadcast.api.APIRequest;
 import messagebroadcast.api.APIResponse;
 
 public class APIRequestHandler implements Runnable {
-    
-        
     public static final String GET_PUBLIC_KEY = "GET_PK";
     public static final String GET_MESSAGE_QUEUE = "GET_QUEUE";
     public static final String SEND_MESSAGE = "SND_MSG";
@@ -32,47 +30,43 @@ public class APIRequestHandler implements Runnable {
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            strRequest = in.readLine();
-        } catch (IOException e) {
-            return;
-        }
-        
-        if (strRequest != null) {
-            APIRequest req = new APIRequest(strRequest);
-            APIResponse resp;
+            
+            while ( ( strRequest = in.readLine()) != null ) {
+                if (strRequest != null) {
+                    APIRequest req = new APIRequest(strRequest);
+                    APIResponse resp;
 
-            switch (req.getRequestType()) {
-                case GET_PUBLIC_KEY:
-                    resp = new APIResponse(APIResponse.SUCCESS);
-                    resp.setParam("PK", this.res.getPublicKey());
-                    out.println(resp.toString());
-                    break;
-                case GET_MESSAGE_QUEUE:
-                    resp = new APIResponse(APIResponse.SUCCESS);
-                    for (String msg : this.res.getMessageQueue() ) {
-                        resp.setParam("MESSAGE", this.res.decrypt(msg));
-                    }
-                    out.println(resp.toString());
-                    break;
-                case SEND_MESSAGE:
-                    String message = req.getParam("MESSAGE");
-                    this.res.addMessage(message);
+                    switch (req.getRequestType()) {
+                        case GET_PUBLIC_KEY:
+                            resp = new APIResponse(APIResponse.SUCCESS);
+                            resp.setParam("PK", this.res.getPublicKey());
+                            out.println(resp.toString());
+                            break;
+                        case GET_MESSAGE_QUEUE:
+                            resp = new APIResponse(APIResponse.SUCCESS);
+                            for (String msg : this.res.getMessageQueue() ) {
+                                resp.setParam("MESSAGE", this.res.decrypt(msg));
+                            }
+                            out.println(resp.toString());
+                            break;
+                        case SEND_MESSAGE:
+                            String message = req.getParam("MESSAGE");
+                            this.res.addMessage(message);
 
-                    resp = new APIResponse(APIResponse.SUCCESS);
-                    out.println(resp.toString());
-                    break;
-                default:
-                    resp = new APIResponse(APIResponse.FAIL);
-                    resp.setParam("MESSAGE", "Invalid request.");
-                    out.println(resp.toString());
-                    break;
-            } 
-        }
-        
-        try {
+                            resp = new APIResponse(APIResponse.SUCCESS);
+                            out.println(resp.toString());
+                            break;
+                        default:
+                            resp = new APIResponse(APIResponse.FAIL);
+                            resp.setParam("MESSAGE", "Invalid request.");
+                            out.println(resp.toString());
+                            break;
+                    } 
+                }
+            }
             in.close();
             out.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             return;
         }
     }
