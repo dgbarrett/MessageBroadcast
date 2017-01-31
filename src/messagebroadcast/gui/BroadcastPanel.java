@@ -3,7 +3,6 @@ package messagebroadcast.gui;
 import java.awt.BorderLayout;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class BroadcastPanel extends JPanel {
@@ -44,10 +43,6 @@ public class BroadcastPanel extends JPanel {
         this.parent.exitGUI();
     }
     
-    public JButton getSubmit() {
-        return this.broadcast.getSubmit();
-    }
-
     void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
         this.broadcast.updateBroadcasts(broadcasts);
     }

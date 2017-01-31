@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import messagebroadcast.client.BroadcastClient;
 
-public class MessageBroadcastGUI extends JFrame {
+public class MessageBroadcastGUI extends JFrame implements ExitableFrom {
     
     public static final int WIDTH = 400;    
     public static final int HEIGHT = 600;
@@ -32,7 +32,6 @@ public class MessageBroadcastGUI extends JFrame {
         this.add( this.broadcast, BorderLayout.CENTER );
         
         scheduleServerUpdates();
-        this.getRootPane().setDefaultButton(this.broadcast.getSubmit());
         
         this.setVisible(true);
     } 
@@ -43,16 +42,17 @@ public class MessageBroadcastGUI extends JFrame {
             this.broadcast.updateBroadcasts( this.broadcastClient.getBroadcasts() );
         }
     }
-    
-    public void exitGUI() {
-        this.dispose();
-    }
-    
+   
     public void updateBroadcastsFromServer() {
         this.broadcast.updateBroadcasts( this.broadcastClient.getBroadcasts() );
     }
     
     private void scheduleServerUpdates() {
         this.timer.scheduleAtFixedRate( this.updateTask , new Random().nextInt(200), 1000);
+    }
+    
+    @Override
+    public void exitGUI() {
+        this.dispose();
     }
 }

@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 public class ExitListener implements ActionListener {
 
-    private BroadcastArea parent;
+    private ExitableFrom parent;
     
-    public ExitListener(BroadcastArea parent) {
+    public ExitListener(ExitableFrom parent) {
         this.parent=parent;
     }
     

@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class BroadcastArea extends JPanel {
+public class BroadcastArea extends JPanel implements ExitableFrom {
     
     private BroadcastPanel parent;
     private JLabel title;
@@ -95,6 +95,7 @@ public class BroadcastArea extends JPanel {
         this.broadcasts.updateBroadcasts(broadcasts);
     }
     
+    @Override
     public void exitGUI() {
         this.parent.exitGUI();
     }

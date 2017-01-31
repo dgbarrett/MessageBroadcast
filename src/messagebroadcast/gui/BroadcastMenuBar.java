@@ -13,7 +13,7 @@ import javax.swing.JMenuItem;
  *
  * @author damon
  */
-public class BroadcastMenuBar extends JMenuBar {
+public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
     
     private final BroadcastPanel parent;
     private final JMenu about;
@@ -45,8 +45,15 @@ public class BroadcastMenuBar extends JMenuBar {
         this.messaging.add(this.fromFile);
         this.messaging.add(this.sendPicture);
         
+        this.exit.addActionListener( new ExitListener(this) );
+        
         this.add(this.about);
         this.add(this.messaging);
+    }
+    
+    @Override
+    public void exitGUI() {
+        this.parent.exitGUI();
     }
     
 }
