@@ -1,6 +1,8 @@
 package messagebroadcast.gui;
 
 import java.awt.BorderLayout;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JPanel;
 
 public class BroadcastPanel extends JPanel {
@@ -35,6 +37,10 @@ public class BroadcastPanel extends JPanel {
     
     public int getParentHeight() {
         return this.parent.getHeight();
+    }
+
+    void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
+        this.broadcast.updateBroadcasts(broadcasts);
     }
     
 }

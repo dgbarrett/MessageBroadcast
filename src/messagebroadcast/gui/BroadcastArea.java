@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -87,6 +89,10 @@ public class BroadcastArea extends JPanel {
     
     public int getParentHeight() {
         return this.parent.getHeight();
+    }
+
+    void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
+        this.broadcasts.updateBroadcasts(broadcasts);
     }
     
 }

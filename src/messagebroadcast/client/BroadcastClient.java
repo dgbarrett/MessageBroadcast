@@ -7,7 +7,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import messagebroadcast.client.security.ClientCrypt;
 import messagebroadcast.api.APIMessage;
 import messagebroadcast.api.APIRequest;
@@ -33,14 +38,6 @@ public class BroadcastClient {
         }
         
         this.crypto = new ClientCrypt();
-    }
-    
-    public ArrayList<String> getMessageQueue() {
-        return null;
-    }
-    
-    public String getPublicKey() {
-        return null;
     }
     
     public int broadcastMessage(String message) {
@@ -70,16 +67,31 @@ public class BroadcastClient {
         return 0;
     } 
     
-    public void getBroadcasts() {
+    public List<Map.Entry<String, String>> getBroadcasts() {
         try {
             System.out.println("sending GET_QUEUE");
 
             this.send("MSGTYPE=GET_QUEUE");
             APIResponse response = this.getResponse();
             
-            System.out.println("Response was: " + response.toString());
+            String[] messages = response.getParams("MESSAGE");
+            String[] msgIds = response.getParams("MSGID");
+            
+            if (messages.length == msgIds.length) {
+                List<Map.Entry<String,String>> messageMap = new ArrayList<>();
+                
+                for (int i = 0 ; i < messages.length ; i++) {
+                    Map.Entry<String, String> entry = new AbstractMap.SimpleEntry<>(msgIds[i], messages[i]);
+                    messageMap.add(entry);
+                }
+                
+                return messageMap;
+            }
+            
+            return null;
         }catch (Exception e ) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
     

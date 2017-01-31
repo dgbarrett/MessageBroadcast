@@ -47,6 +47,9 @@ public class APIRequestHandler implements Runnable {
                             for (String msg : this.res.getMessageQueue() ) {
                                 resp.setParam("MESSAGE", this.res.decrypt(msg));
                             }
+                            for (String msg : this.res.getMessageIds() ) {
+                                resp.setParam("MSGID", msg);
+                            }
                             out.println(resp.toString());
                             break;
                         case SEND_MESSAGE:

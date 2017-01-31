@@ -1,6 +1,8 @@
 package messagebroadcast.gui;
 
 import java.awt.BorderLayout;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
 import messagebroadcast.client.BroadcastClient;
 
@@ -28,6 +30,10 @@ public class MessageBroadcastGUI extends JFrame {
     } 
     
     public void sendMessage(String message) {
-        this.broadcastClient.broadcastMessage(message);
+        if (message != null) {
+            this.broadcastClient.broadcastMessage(message);
+            this.broadcast.updateBroadcasts( this.broadcastClient.getBroadcasts() );
+        }
+        
     }
 }
