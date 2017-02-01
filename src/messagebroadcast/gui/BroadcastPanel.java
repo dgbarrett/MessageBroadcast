@@ -52,4 +52,8 @@ public class BroadcastPanel extends JPanel {
         return this.parent;
     }
     
+    public void setBroadcast(String broadcast) {
+        this.broadcast.setBroadcast(broadcast);
+    }
+    
 }

@@ -7,11 +7,16 @@ package messagebroadcast.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -52,6 +57,8 @@ public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
         this.exit.addActionListener( new ExitListener(this) );
         this.versInfo.addActionListener( new VersionInfoListener(this.getFrame()) );
         
+        this.fromFile.addActionListener( new LoadFileListener(this.parent) );
+        
         this.add(this.about);
         this.add(this.messaging);
     }
@@ -68,6 +75,35 @@ public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
                                           "          Current version is v0.1", 
                                           "Version Info", 
                                           JOptionPane.PLAIN_MESSAGE);
+        }        
+    }
+    
+    private class LoadFileListener implements ActionListener {
+
+        private final BroadcastPanel parent;
+        
+        public LoadFileListener(BroadcastPanel parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Text files", "txt");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(parent);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                String filename = chooser.getSelectedFile().getAbsolutePath();
+                
+                try {
+                    String fileContents = new String(Files.readAllBytes(Paths.get(filename)));
+                    this.parent.setBroadcast(fileContents);
+                } catch (IOException err) {
+                    System.out.println("Could not get file contents.");
+                }
+                
+            }
         }        
     }
     

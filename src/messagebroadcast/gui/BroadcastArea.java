@@ -1,22 +1,23 @@
 package messagebroadcast.gui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class BroadcastArea extends JPanel implements ExitableFrom {
     
-    private BroadcastPanel parent;
-    private JLabel title;
-    private BroadcastDisplayPane broadcasts;
-    private BroadcastCreationArea create;
-    private JButton sendMessage;
+    private final BroadcastPanel parent;
+    private final JLabel title;
+    private final BroadcastDisplayPane broadcasts;
+    private final BroadcastCreationArea create;
+    private final JButton sendMessage;
     private JButton exit;
 
     public BroadcastArea(BroadcastPanel parent) {
@@ -29,53 +30,33 @@ public class BroadcastArea extends JPanel implements ExitableFrom {
         this.exit = new JButton("Exit");
         this.title = new JLabel("Broadcasts:");
         
+        this.title.setFont( new Font(null, Font.BOLD, 18));
+        this.title.setBorder( new EmptyBorder(25,0,5,0));
+        
         this.sendMessage.addActionListener( new SendMessageListener(this) );
         this.exit.addActionListener( new ExitListener(this) );
         
-        this.setLayout( new GridBagLayout() );
-        GridBagConstraints c = new GridBagConstraints();
+        this.setLayout( new BorderLayout() );
         
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 4;
-        c.gridheight = 1;
-        c.anchor = GridBagConstraints.WEST;
+        this.add(this.title, BorderLayout.NORTH);        
+        this.add(this.broadcasts, BorderLayout.CENTER);
         
-        this.title.setFont( new Font(null, Font.BOLD, 18));
-        this.add( this.title , c);
-        
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridwidth = 4;
-        c.gridheight = 3;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(10,0,0,0);
+        JPanel p = new JPanel();        
+        JPanel p2 = new JPanel();
 
-        this.add( this.broadcasts , c);
+        p.setLayout( new GridLayout(3, 1));
         
-        c.gridx = 1;
-        c.gridy = 4;
-        c.gridwidth = 4;
-        c.anchor = GridBagConstraints.WEST;
-        c.gridheight = 1;
+        p.add(new JLabel("Create broadcast:"));
+        p.add(this.create);
         
-        this.add( this.create , c ); 
+        p2.setLayout( new FlowLayout());
         
-        c.gridx = 1;
-        c.gridy = 5;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.anchor = GridBagConstraints.CENTER;
+        p2.add(this.sendMessage);
+        p2.add(this.exit);
         
-        this.add( this.sendMessage, c );    
-        
-        c.gridx = 3;
-        c.gridy = 5;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.anchor = GridBagConstraints.EAST;
-        
-        this.add( this.exit, c );
+        p.add(p2);
+
+        this.add(p, BorderLayout.SOUTH);
     }
     
     protected void sendMessage() {
@@ -98,5 +79,9 @@ public class BroadcastArea extends JPanel implements ExitableFrom {
     @Override
     public void exitGUI() {
         this.parent.exitGUI();
+    }
+    
+    public void setBroadcast(String broadcast) {
+        this.create.setBroadcast(broadcast);
     }
 }
