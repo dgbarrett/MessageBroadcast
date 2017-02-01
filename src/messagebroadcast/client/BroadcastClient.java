@@ -1,4 +1,3 @@
-
 package messagebroadcast.client;
 
 import java.io.BufferedReader;
@@ -13,9 +12,10 @@ import java.util.List;
 import java.util.Map;
 import messagebroadcast.client.security.ClientCrypt;
 import messagebroadcast.api.APIMessage;
+import messagebroadcast.api.APIMessageTypes;
 import messagebroadcast.api.APIRequest;
 import messagebroadcast.api.APIResponse;
-import messagebroadcast.server.APIRequestHandler;
+import messagebroadcast.api.APIRequestHandler;
 
 public class BroadcastClient {
     
@@ -69,12 +69,12 @@ public class BroadcastClient {
                 }
                 
                 if (!messageParts.isEmpty()) {
-                    APIRequest req = new APIRequest(APIRequestHandler.SEND_MESSAGE, true);
+                    APIRequest req = new APIRequest(APIMessageTypes.SEND_MESSAGE, true);
                 
                     for (String messagePart : messageParts) {
                         System.out.println("Submsg is " + messagePart.length());
                         String encryptedMessage = this.crypto.encrypt(messagePart, publicKey);
-                        req.setParam("MESSAGE", encryptedMessage);
+                        req.addParam("MESSAGE", encryptedMessage);
                     }
 
                     System.out.println("SENDING ENCYRYPTED MESSAGE: " + req.toString() );
@@ -131,4 +131,4 @@ public class BroadcastClient {
             return null;
         }
     }
-}
+} 

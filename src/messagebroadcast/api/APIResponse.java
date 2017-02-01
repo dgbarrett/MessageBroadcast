@@ -32,7 +32,7 @@ public final class APIResponse extends APIMessage {
         }
         
         for (int i = 1 ; i < strParams.length ; i++) {
-            this.setParam(strParams[i]);
+            this.addParam(strParams[i]);
         }
     }
     

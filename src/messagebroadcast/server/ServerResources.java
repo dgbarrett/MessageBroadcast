@@ -4,7 +4,7 @@ import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import messagebroadcast.server.security.ServerCrypt;
 
-class ServerResources {
+public class ServerResources {
     
     private static final int QUEUE_SIZE = 50;
     
