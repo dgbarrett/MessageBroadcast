@@ -15,14 +15,23 @@ import messagebroadcast.api.APIMessage;
 import messagebroadcast.api.APIMessageTypes;
 import messagebroadcast.api.APIRequest;
 import messagebroadcast.api.APIResponse;
-import messagebroadcast.api.APIRequestHandler;
 
+/*
+    Client side of the MessageBroadcast system.
+*/
 public class BroadcastClient {
     
+    // Connection to server.
     private PrintWriter out;
+    // Connection to server
     private BufferedReader in;
+    // All crypto needs
     private ClientCrypt crypto;
-    
+    // <UUID,Message> broadcasts retrieved from server during this session
+    private List<Map.Entry<String,String>> broadcasts;
+    // Index of the next message not shown on the GUI
+    private int renderIndex;
+
     public BroadcastClient(int port) {
         try {
             Socket echoSocket = new Socket(InetAddress.getByName("localhost"), port);
@@ -36,35 +45,36 @@ public class BroadcastClient {
         }
         
         this.crypto = new ClientCrypt();
+        this.broadcasts = new ArrayList<>();
+        this.renderIndex = 0;
     }
     
+    // Broadcast a message to all other users.
     public int broadcastMessage(String dirtyMessage) {
             try {
-                System.out.println("SENDING PK_GET");
+                // Send request for servers Public Key.
                 this.send("MSGTYPE=GET_PK;");
-                
                 APIResponse response = this.getResponse();
-                System.out.println("Response was: " + response.toString());
 
+                // Parse out key and key size
                 String publicKey = response.getParam("PK");
                 int pkSize = Integer.parseInt(response.getParam("SIZE"));
-                int maxMsgSize = pkSize/8 - 11;
-                maxMsgSize /= 2;
+                // Break down large messages into individually encrypted chunks.
+                int maxMsgSize = (pkSize/8 - 11)/2;
                 
                 ArrayList<String> messageParts = new ArrayList<>();
                 String message = this.crypto.clean(dirtyMessage);
                 String submsg = null;
                 int strLen = message.length();
-                
-                System.out.println("Message len is " + strLen);
 
+                // Partions message into messages of size maxMsgSize or less.
                 for (int i = 0; i < strLen ; i= i + maxMsgSize) {
                     if (i + maxMsgSize > strLen) {
                        submsg = message.substring(i, strLen);
                     } else {
                         submsg = message.substring(i, i + maxMsgSize);
                     }
-                    System.out.println("Submsg is " + submsg.length());
+
                     messageParts.add(submsg);
                 }
                 
@@ -72,41 +82,61 @@ public class BroadcastClient {
                     APIRequest req = new APIRequest(APIMessageTypes.SEND_MESSAGE, true);
                 
                     for (String messagePart : messageParts) {
-                        System.out.println("Submsg is " + messagePart.length());
+                        // Encrypt each part of the message.
                         String encryptedMessage = this.crypto.encrypt(messagePart, publicKey);
+                        // Add as a parameter to the APIRequest
                         req.addParam("MESSAGE", encryptedMessage);
                     }
 
-                    System.out.println("SENDING ENCYRYPTED MESSAGE: " + req.toString() );
+                    // Send message to server.
                     this.send(req);
                     response = this.getResponse();
-                    System.out.println("Response was: " + response.toString());
-                    System.out.println(" ");
                 }
-                
             } catch (Exception e ) {
                 System.out.println(e.getMessage());
             }
+            
         return 0;
     } 
     
+    // Get all broadcasts from currently on the server.
     public List<Map.Entry<String, String>> getBroadcasts() {
         try {
             this.send("MSGTYPE=GET_QUEUE");
             APIResponse response = this.getResponse();
             
+            // Messages on the server and their corresponding unique ID's
             String[] messages = response.getParams("MESSAGE");
             String[] msgIds = response.getParams("MSGID");
             
             if (messages.length == msgIds.length) {
-                List<Map.Entry<String,String>> messageMap = new ArrayList<>();
                 
+                // Loop through all message returned from server.
                 for (int i = 0 ; i < messages.length ; i++) {
                     Map.Entry<String, String> entry = new AbstractMap.SimpleEntry<>(msgIds[i], messages[i]);
-                    messageMap.add(entry);
+                    
+                    /*
+                        If we dont have the message client side already, store 
+                        it in the broadcasts list.
+                    */
+                    if (!this.broadcasts.contains(entry)) {
+                        this.broadcasts.add(entry);
+                    }
                 }
+                 
+                /*
+                    Slice new messages (messages not on GUI) off end of list of 
+                    all messages retreived from server during this session.
+                */
+                List<Map.Entry<String,String>> newEntries = 
+                        new ArrayList( this.broadcasts.subList(this.renderIndex, 
+                                                               this.broadcasts.size()));
                 
-                return messageMap;
+                
+
+                this.renderIndex += newEntries.size();
+                
+                return newEntries;
             }
             
             return null;
@@ -116,14 +146,17 @@ public class BroadcastClient {
         }
     }
     
+    // Send APIMessage to server.
     private void send(APIMessage apiMessage) {
         this.send(apiMessage.toString());
     }
     
+    // Send raw string to server.
     private void send(String apiString) {
         this.out.println(apiString);
     }
     
+    // Get response from server after sending message.
     private APIResponse getResponse() {
         try {
             return new APIResponse(in.readLine());
