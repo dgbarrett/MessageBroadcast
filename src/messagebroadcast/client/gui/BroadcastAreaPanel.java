@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
@@ -11,16 +13,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class BroadcastArea extends JPanel implements ExitableFrom {
+/*
+    Holds main GUI components for the MessageBroadcast gui.
+*/
+public class BroadcastAreaPanel extends JPanel implements ExitableFrom {
     
     private final BroadcastPanel parent;
     private final JLabel title;
+    // Displays messages from the MessageBroadcast server
     private final BroadcastDisplayPane broadcasts;
+    // Allows users to type a new broadcast to send.
     private final BroadcastCreationArea create;
     private final JButton sendMessage;
     private JButton exit;
 
-    public BroadcastArea(BroadcastPanel parent) {
+    public BroadcastAreaPanel(BroadcastPanel parent) {
         super();
         
         this.parent = parent;
@@ -59,29 +66,41 @@ public class BroadcastArea extends JPanel implements ExitableFrom {
         this.add(p, BorderLayout.SOUTH);
     }
     
+    // Private Listener class for "Broadcast Message" button.
+    private class SendMessageListener implements ActionListener {
+    
+        private BroadcastAreaPanel panel;
+
+        public SendMessageListener(BroadcastAreaPanel panel) {
+            this.panel = panel;
+        }
+
+        // Called when user clicks "Broadcast Message" button
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            this.panel.sendMessage();
+        }
+    }
+    
+    // Send the text currently in this.create to the server.
     protected void sendMessage() {
         String message = this.create.getBroadcast();
         this.parent.sendMessage(message);
     }
-    
-    public int getParentWidth() {
-        return this.parent.getWidth();
-    }
-    
-    public int getParentHeight() {
-        return this.parent.getHeight();
-    }
 
+    // Add the most recent message broadcasts retrieved from the server to the display area.
     void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
         this.broadcasts.updateBroadcasts(broadcasts);
     }
     
+    // Set the text in this.create
+    public void setBroadcast(String broadcast) {
+        this.create.setBroadcast(broadcast);
+    }
+    
+    // Close the JFrame containing this component.
     @Override
     public void exitGUI() {
         this.parent.exitGUI();
-    }
-    
-    public void setBroadcast(String broadcast) {
-        this.create.setBroadcast(broadcast);
     }
 }

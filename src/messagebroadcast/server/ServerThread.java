@@ -1,7 +1,9 @@
 
 package messagebroadcast.server;
 
-
+/*
+    Runnable thread that runs the central MessageBroadcast server.
+*/
 public class ServerThread implements Runnable {
     
     BroadcastServer server;

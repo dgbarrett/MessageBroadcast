@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package messagebroadcast.security;
 
 import java.security.KeyFactory;
@@ -12,14 +7,14 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
-/**
- *
- * @author damon
- */
-public class CryptUtil {
+/*
+    Encryption/decryption and related functions.
+*/
+public class CryptoUtil {
     
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
+    // Algorithm is the algorithm used to generate the public key.
     public static byte[] encrypt(byte[] publicKey, byte[] inputData, String algorithm)
             throws Exception {
 
@@ -48,6 +43,7 @@ public class CryptUtil {
         return decryptedBytes;
     }
     
+    // We encode all bytes arrays to base 16 before sending over the network.
     public static byte[] decodeBase16(String s) {
         byte[] b = new byte[s.length() / 2];
         for (int i = 0; i < b.length; i++) {

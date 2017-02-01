@@ -1,25 +1,24 @@
 package messagebroadcast.client.gui;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
+/*
+    Displays the message broadcasts retreived from the server on the gui.
+*/
 public class BroadcastDisplayPane extends JScrollPane {
     
-    public static final int HEIGHT = 400;
-    private static final int PADDING_LR = 25;
+    public static final int PANE_HEIGHT = 400;
     
-    private BroadcastArea parent;
+    private BroadcastAreaPanel parent;
     private JTextPane textpane;
 
-    public BroadcastDisplayPane(BroadcastArea aThis) {
+    public BroadcastDisplayPane(BroadcastAreaPanel parent) {
         super();
         
         this.parent = parent;
@@ -32,18 +31,8 @@ public class BroadcastDisplayPane extends JScrollPane {
         
         this.setViewportView( this.textpane );
     }
-    
-
-    
-    public void renderBroadcasts() {
-        StyledDocument doc = this.textpane.getStyledDocument();
-    }
-    
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(375, HEIGHT);
-    }
-
+  
+    // Add new broadcasts to the JTextPane (message broadcast display area).
     void updateBroadcasts(List<Map.Entry<String,String>> broadcasts) {
         StyledDocument doc = this.textpane.getStyledDocument();
         
@@ -57,4 +46,10 @@ public class BroadcastDisplayPane extends JScrollPane {
             } 
         }
     }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(375, PANE_HEIGHT);
+    }
+
 }

@@ -4,12 +4,15 @@ import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/*
+    Extended JTextArea used to create Message Broadcasts to be sent to the server.
+*/
 public class BroadcastCreationArea extends JScrollPane {
     
-    private BroadcastArea parent;
+    private BroadcastAreaPanel parent;
     private JTextArea textarea;
 
-    public BroadcastCreationArea(BroadcastArea parent) {
+    public BroadcastCreationArea(BroadcastAreaPanel parent) {
         super(); 
         
         this.parent = parent;
@@ -24,19 +27,21 @@ public class BroadcastCreationArea extends JScrollPane {
         this.setViewportView(textarea);
     }
     
+    // Get the contents of the text area.
     public String getBroadcast() {
         String text = this.textarea.getText();
         this.textarea.setText(null);
-        return text.replace("\n", " ").replace("  ", " ").replace(";", "-");
+        return text;
+    }
+    
+    // Set the contents of the text area.
+    public void setBroadcast(String broadcast) {
+        this.textarea.setText(null);
+        this.textarea.setText(broadcast);
     }
     
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(375, 50);
-    }
-    
-    public void setBroadcast(String broadcast) {
-        this.textarea.setText(null);
-        this.textarea.setText(broadcast);
     }
 }

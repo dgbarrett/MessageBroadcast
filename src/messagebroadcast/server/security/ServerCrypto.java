@@ -1,29 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package messagebroadcast.server.security;
 
-import messagebroadcast.security.CryptUtil;
+import messagebroadcast.security.CryptoUtil;
 
-/**
- *
- * @author damon
- */
-public class ServerCrypt {
+/*
+    All crypto/security functions needed by the MessageBroadcast central server.
+*/
+public class ServerCrypto {
     
     private KeyLocker locker;
 
-    public ServerCrypt() {
+    public ServerCrypto() {
         this.locker = new KeyLocker();
     }
     
     public String decrypt(String data) {
         byte[] decrypted = null;
         try {
-            decrypted = CryptUtil.decrypt(locker.getPrivateKey(), 
-                                          CryptUtil.decodeBase16(data), 
+            decrypted = CryptoUtil.decrypt(locker.getPrivateKey(), 
+                                          CryptoUtil.decodeBase16(data), 
                                           locker.ALGORITHM);
         } catch (Exception e) {
             System.out.println("Decryption failed\n");
@@ -32,10 +26,12 @@ public class ServerCrypt {
         return new String(decrypted);
     }
     
+    // Get the servers current public key.
     public String getPublicKey() {
-        return CryptUtil.encodeBase16(this.locker.getPublicKey());
+        return CryptoUtil.encodeBase16(this.locker.getPublicKey());
     }
     
+    // Get the servers current public key size (in bits).
     public int getPublicKeySize(){
         return KeyLocker.getKeySize();
     }

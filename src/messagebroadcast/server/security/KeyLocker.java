@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package messagebroadcast.server.security;
 
 import java.security.KeyPair;
@@ -12,21 +7,21 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-/**
- *
- * @author damon
- */
 public final class KeyLocker {
+    //Encryption key size.
     public static final int KEY_SIZE = 2048;
+    
     private byte[] publicKey; 
     private byte[] privateKey;
     
+    // Encryption algorithm.
     protected final String ALGORITHM = "RSA";
 
     protected KeyLocker() {
         this.regenKeyPair();
     }
     
+    // Generates a key pair.
     protected void regenKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
@@ -42,14 +37,17 @@ public final class KeyLocker {
         }
     }
     
+    // Returns the current public key.
     protected byte[] getPublicKey() {
         return Arrays.copyOf(publicKey, publicKey.length);
     }
     
+    // Returns the current private key.
     protected byte[] getPrivateKey() {
         return Arrays.copyOf(privateKey, privateKey.length);
     }
     
+    // Returns the current encryption key size (in bits).
     public static int getKeySize() {
         return KEY_SIZE;
     }

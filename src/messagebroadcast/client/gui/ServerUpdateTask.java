@@ -2,6 +2,9 @@ package messagebroadcast.client.gui;
 
 import java.util.TimerTask;
 
+/*
+    Background task used to check for/retrieve Message Broadcasts from central server.
+*/
 public class ServerUpdateTask extends TimerTask {
     
     private MessageBroadcastGUI parent;

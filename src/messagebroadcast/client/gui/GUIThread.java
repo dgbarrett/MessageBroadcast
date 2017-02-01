@@ -1,5 +1,8 @@
 package messagebroadcast.client.gui;
 
+/*
+    Runnable thread that spawns a new MessageBroadcastGUI
+*/
 public class GUIThread implements Runnable {
     
     final int port;

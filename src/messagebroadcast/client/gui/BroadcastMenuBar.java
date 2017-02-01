@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package messagebroadcast.client.gui;
 
 import java.awt.event.ActionEvent;
@@ -18,10 +13,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- *
- * @author damon
- */
+/*
+    Menu bar for the MessageBroadcast gui.
+*/
 public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
     
     private final BroadcastPanel parent;
@@ -54,9 +48,11 @@ public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
         this.messaging.add(this.fromFile);
         this.messaging.add(this.sendPicture);
         
+        // Allows user to exit GUI.
         this.exit.addActionListener( new ExitListener(this) );
+        // Allows user to see version info.
         this.versInfo.addActionListener( new VersionInfoListener(this.getFrame()) );
-        
+        // Allows user to load broadcast from file.
         this.fromFile.addActionListener( new LoadFileListener(this.parent) );
         
         this.add(this.about);
@@ -69,6 +65,8 @@ public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
         public VersionInfoListener( JFrame gui ){
             this.gui = gui;
         }
+        
+        // Called when a used is trying to see the version info of the software.
         @Override
         public void actionPerformed(ActionEvent e) {
             JOptionPane.showMessageDialog(this.gui, 
@@ -86,31 +84,40 @@ public class BroadcastMenuBar extends JMenuBar implements ExitableFrom {
             this.parent = parent;
         }
 
+        // Called when a user is trying to load a message broadcast from file.
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Create File Chooser
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Text files", "txt");
             chooser.setFileFilter(filter);
+            
+            //Display File Chooser
             int returnVal = chooser.showOpenDialog(parent);
+            
+            // If user selected a file.
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getAbsolutePath();
                 
                 try {
+                    /* Put the file contents in the message broadcast creations 
+                    text area. */
                     String fileContents = new String(Files.readAllBytes(Paths.get(filename)));
                     this.parent.setBroadcast(fileContents);
                 } catch (IOException err) {
                     System.out.println("Could not get file contents.");
                 }
-                
             }
         }        
     }
     
+    // Get the JFrame housing this component.
     private JFrame getFrame() {
         return this.parent.getFrame();
     }
     
+    // Close the JFrame housing this component.
     @Override
     public void exitGUI() {
         this.parent.exitGUI();

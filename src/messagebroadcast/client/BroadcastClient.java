@@ -10,7 +10,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import messagebroadcast.client.security.ClientCrypt;
+import messagebroadcast.client.security.ClientCrypto;
 import messagebroadcast.api.APIMessage;
 import messagebroadcast.api.APIMessageTypes;
 import messagebroadcast.api.APIRequest;
@@ -26,7 +26,7 @@ public class BroadcastClient {
     // Connection to server
     private BufferedReader in;
     // All crypto needs
-    private ClientCrypt crypto;
+    private ClientCrypto crypto;
     // <UUID,Message> broadcasts retrieved from server during this session
     private List<Map.Entry<String,String>> broadcasts;
     // Index of the next message not shown on the GUI
@@ -44,7 +44,7 @@ public class BroadcastClient {
             System.out.println(e.getMessage());
         }
         
-        this.crypto = new ClientCrypt();
+        this.crypto = new ClientCrypto();
         this.broadcasts = new ArrayList<>();
         this.renderIndex = 0;
     }
