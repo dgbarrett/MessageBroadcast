@@ -38,6 +38,11 @@ public class BroadcastPanel extends JPanel {
         this.parent.sendMessage(message);
     }
     
+    // Send the message in the broadcast creation area.
+    protected void sendCurrentMessage() {
+        this.parent.sendMessage(this.broadcast.getBroadcast());
+    }
+    
     // Closes the GUI housing this component.
     public void exitGUI() {
         this.parent.exitGUI();

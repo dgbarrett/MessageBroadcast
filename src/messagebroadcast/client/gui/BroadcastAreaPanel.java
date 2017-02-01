@@ -82,6 +82,11 @@ public class BroadcastAreaPanel extends JPanel implements ExitableFrom {
         }
     }
     
+    // Return the contents of the broadcast creation area.
+    protected String getBroadcast() {
+        return this.create.getBroadcast();
+    }
+    
     // Send the text currently in this.create to the server.
     protected void sendMessage() {
         String message = this.create.getBroadcast();
