@@ -48,3 +48,9 @@ The server does not track who is connected to the server, or how many people are
 Possible Next Features:
 - Random regeneration of key pair during server session.
 - Sending picture messages.
+
+Resources Used:
+https://docs.oracle.com/javase/tutorial/networking/sockets/
+http://mathworld.wolfram.com/RSAEncryption.html
+http://stackoverflow.com/questions/9655181/how-to-convert-a-byte-array-to-a-hex-string-in-java
+http://stackoverflow.com/questions/31915617/how-to-encrypt-string-with-public-key-and-decrypt-with-private-key
