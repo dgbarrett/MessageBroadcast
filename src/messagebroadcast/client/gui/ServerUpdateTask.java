@@ -1,4 +1,4 @@
-package messagebroadcast.gui;
+package messagebroadcast.client.gui;
 
 import java.util.TimerTask;
 

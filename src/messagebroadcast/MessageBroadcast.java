@@ -1,6 +1,6 @@
 package messagebroadcast;
 
-import messagebroadcast.gui.GUIThread;
+import messagebroadcast.client.gui.GUIThread;
 import messagebroadcast.server.BroadcastServer;
 import messagebroadcast.server.ServerThread;
 

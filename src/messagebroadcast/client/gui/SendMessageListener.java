@@ -1,4 +1,4 @@
-package messagebroadcast.gui;
+package messagebroadcast.client.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,4 @@
-package messagebroadcast.gui;
+package messagebroadcast.client.gui;
 
 public class GUIThread implements Runnable {
     

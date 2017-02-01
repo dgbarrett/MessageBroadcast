@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package messagebroadcast.gui;
+package messagebroadcast.client.gui;
 
 import javax.swing.JLabel;
 
